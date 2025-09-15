@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev:home": "pnpm --filter home dev",
-    "dev:products": "pnpm --filter list-products dev"
+    "dev:products": "pnpm --filter list-products dev",
+    "dev:api": "pnpm --filter api-products start"
   }
 }
