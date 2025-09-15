@@ -1,0 +1,9 @@
+{
+  "name": "monorepo-frontend-with-galaxy",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev:home": "pnpm --filter home dev",
+    "dev:products": "pnpm --filter list-products dev"
+  }
+}
