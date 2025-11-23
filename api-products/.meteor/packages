@@ -10,6 +10,7 @@ mongo@2.1.4                   # The database Meteor supports right now
 static-html@1.4.0             # Define static page content in .html files
 reactive-var@1.0.13            # Reactive variable for tracker
 tracker@1.3.4                 # Meteor's client-side reactive programming library
+webapp@1.13.2                 # HTTP middleware to expose REST endpoints
 
 standard-minifier-css@1.9.3   # CSS minifier run for production mode
 standard-minifier-js@3.1.1    # JS minifier run for production mode
