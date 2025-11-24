@@ -31,6 +31,36 @@ pnpm --filter home dev
 
 A API Meteor sobe na porta `3000` e expõe `GET /api/products` para que os remotes consumam os dados.
 
+### Executando a API Meteor (detalhado)
+
+1. Instale o runtime do Meteor (caso ainda não tenha):
+
+   ```sh
+   curl https://install.meteor.com/ | sh
+   ```
+
+2. Instale as dependências do pacote (inclui os tipos do Meteor para TypeScript):
+
+   ```sh
+   cd api-products
+   meteor npm install
+   ```
+
+3. Suba a API (porta padrão 3000):
+
+   ```sh
+   meteor run
+   # ou, a partir da raiz do monorepo:
+   pnpm --filter api-products start
+   ```
+
+4. Endpoints disponíveis:
+   - `GET http://localhost:3000/api/products` — lista todos os produtos seedados.
+   - `GET http://localhost:3000/api/products/<id>` — retorna um produto específico.
+   - `POST http://localhost:3000/api/products` — cria um produto (`{ name, price, stock? }`).
+
+Se o TypeScript do editor não resolver os imports `meteor/*`, garanta que o `meteor npm install` foi executado (ele baixa `@types/meteor`) e que o `api-products/tsconfig.json` está no projeto.
+
 ## Configurações compartilhadas
 - ESLint: `eslint.config.js` na raiz
 - TypeScript: `tsconfig.base.json` na raiz
