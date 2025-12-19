@@ -15,10 +15,14 @@ const seedData: Product[] = [
   { name: 'Adesivo React', price: 12.5, stock: 100 },
 ]
 
-export function seedProducts() {
-  if (Products.find().count() === 0) {
-    seedData.forEach((product) => {
-      Products.insert(product)
-    })
+export async function seedProducts() {
+  const collection = Products.rawCollection()
+  const existing = await collection.countDocuments({})
+
+  if (existing === 0) {
+    await collection.insertMany(seedData)
+    console.info('[seed] Produtos inseridos:', seedData.length)
+  } else {
+    console.info('[seed] Coleção já possui registros, nenhum seed aplicado')
   }
 }

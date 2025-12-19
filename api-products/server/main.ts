@@ -3,8 +3,8 @@ import { WebApp } from 'meteor/webapp'
 import type { IncomingMessage, ServerResponse } from 'http'
 import { Products, seedProducts, type Product } from '../imports/api/products'
 
-Meteor.startup(() => {
-  seedProducts()
+Meteor.startup(async () => {
+  await seedProducts()
 })
 
 function sendJson(res: ServerResponse, statusCode: number, payload: unknown) {
@@ -28,7 +28,11 @@ async function readBody(req: IncomingMessage) {
 }
 
 WebApp.connectHandlers.use('/api/products', async (req, res, next) => {
-  const url = new URL(req?.url ?? '/', 'http://localhost')
+  const rawPath = req?.url ?? '/'
+  const trimmedPath = rawPath.startsWith('/api/products')
+    ? rawPath.slice('/api/products'.length) || '/'
+    : rawPath
+  const url = new URL(trimmedPath, 'http://localhost')
   const [productId] = url.pathname.split('/').filter(Boolean)
 
   if (req.method === 'OPTIONS') {
@@ -42,13 +46,13 @@ WebApp.connectHandlers.use('/api/products', async (req, res, next) => {
   }
 
   if (req.method === 'GET' && !productId) {
-    const items = Products.find().fetch()
+    const items = await Products.rawCollection().find({}).toArray()
     sendJson(res, 200, items)
     return
   }
 
   if (req.method === 'GET' && productId) {
-    const product = Products.findOne({ _id: productId })
+    const product = await Products.rawCollection().findOne({ _id: productId })
 
     if (!product) {
       sendJson(res, 404, { message: 'Produto não encontrado' })
@@ -75,8 +79,8 @@ WebApp.connectHandlers.use('/api/products', async (req, res, next) => {
         stock: typeof parsed.stock === 'number' ? parsed.stock : 0,
       }
 
-      const _id = Products.insert(product)
-      sendJson(res, 201, { _id, ...product })
+      const result = await Products.rawCollection().insertOne(product)
+      sendJson(res, 201, { _id: result.insertedId, ...product })
       return
     } catch (error) {
       sendJson(res, 500, { message: 'Erro ao processar o produto', error: `${error}` })

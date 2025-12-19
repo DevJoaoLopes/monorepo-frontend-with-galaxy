@@ -1,4 +1,4 @@
 packages:
 	- 'home'
 	- 'list-products'
-  - 'api-products'
+	- 'api-products'
