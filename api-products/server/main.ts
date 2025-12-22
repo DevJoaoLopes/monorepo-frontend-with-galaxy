@@ -55,7 +55,7 @@ WebApp.connectHandlers.use('/api/products', async (req, res, next) => {
     const product = await Products.rawCollection().findOne({ _id: productId })
 
     if (!product) {
-      sendJson(res, 404, { message: 'Produto não encontrado' })
+      sendJson(res, 404, { message: 'Product not found' })
       return
     }
 
@@ -63,13 +63,14 @@ WebApp.connectHandlers.use('/api/products', async (req, res, next) => {
     return
   }
 
+  // Create product (optional)
   if (req.method === 'POST') {
     try {
       const rawBody = await readBody(req)
       const parsed = (rawBody ? JSON.parse(rawBody) : {}) as Partial<Product>
 
       if (!parsed.name || typeof parsed.price !== 'number') {
-        sendJson(res, 400, { message: 'Envie nome, preço e estoque para criar um produto' })
+        sendJson(res, 400, { message: 'Send the name and price to create a product' })
         return
       }
 
@@ -83,7 +84,7 @@ WebApp.connectHandlers.use('/api/products', async (req, res, next) => {
       sendJson(res, 201, { _id: result.insertedId, ...product })
       return
     } catch (error) {
-      sendJson(res, 500, { message: 'Erro ao processar o produto', error: `${error}` })
+      sendJson(res, 500, { message: 'Error processing product', error: `${error}` })
       return
     }
   }

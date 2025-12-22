@@ -1,25 +1,27 @@
 import { defineConfig } from 'vite'
+import { federation } from '@module-federation/vite'
 import react from '@vitejs/plugin-react'
+import pkg from './package.json'
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 4174,
-    cors: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
+  plugins: [
+    federation({
+      filename: 'remoteEntry.js',
+      name: 'remote',
+      exposes: {
+        './remote-products': './src/App.tsx',
+      },
+      remotes: {},
+      shared: {
+        react: {
+          requiredVersion: pkg.dependencies.react,
+          singleton: true,
+
+        },
+      },
+    }),
+    react()],
   build: {
-    target: 'esnext',
-    lib: {
-      entry: './src/remote-entry.ts',
-      name: 'ListProductsRemote',
-      fileName: 'remote-entry',
-      formats: ['es'],
-    },
-    rollupOptions: {
-      external: ['react', 'react-dom'],
-    },
+    target: 'chrome89',
   },
 })

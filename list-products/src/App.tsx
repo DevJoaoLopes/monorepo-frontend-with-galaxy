@@ -4,8 +4,8 @@ import './App.css'
 function App() {
   return (
     <main>
-      <h1>Lista de produtos</h1>
-      <p>Pacote remoto consumindo a API do Meteor.</p>
+      <h1>Product list</h1>
+      <p>Remote package consuming the Meteor API.</p>
       <ProductList />
     </main>
   )

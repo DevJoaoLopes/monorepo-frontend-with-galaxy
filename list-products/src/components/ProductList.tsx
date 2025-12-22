@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { fetchProducts, formatPrice, type Product } from '../api/products'
 import './ProductList.css'
 
+
 export function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -18,7 +19,7 @@ export function ProductList() {
   }, [])
 
   if (loading) {
-    return <p>Carregando produtos...</p>
+    return <p>Loading products...</p>
   }
 
   if (error) {
@@ -28,8 +29,8 @@ export function ProductList() {
   return (
     <section className="product-list">
       <div className="product-list__header">
-        <h2>Produtos</h2>
-        <small>Consumindo dados do Meteor API</small>
+        <h2>Products</h2>
+        <small>Powered by the Meteor API</small>
       </div>
       <ul>
         {products.map((product) => (
@@ -38,7 +39,7 @@ export function ProductList() {
               <strong>{product.name}</strong>
               <span>{formatPrice(product.price)}</span>
             </div>
-            <small>Estoque: {product.stock}</small>
+            <small>Stock: {product.stock}</small>
           </li>
         ))}
       </ul>
