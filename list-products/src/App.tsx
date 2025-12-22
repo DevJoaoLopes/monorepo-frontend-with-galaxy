@@ -1,17 +1,12 @@
-import { products, formatPrice } from './products'
+import ProductList from './components/ProductList'
 import './App.css'
 
 function App() {
   return (
     <main>
-      <h1>Produtos</h1>
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            {product.name} - {formatPrice(product.price)}
-          </li>
-        ))}
-      </ul>
+      <h1>Product list</h1>
+      <p>Remote package consuming the Meteor API.</p>
+      <ProductList />
     </main>
   )
 }

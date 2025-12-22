@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "install:all": "pnpm install --recursive",
     "dev:home": "pnpm --filter home dev",
     "dev:products": "pnpm --filter list-products dev",
     "dev:api": "pnpm --filter api-products start"
