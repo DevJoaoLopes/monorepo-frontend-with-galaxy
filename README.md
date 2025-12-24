@@ -1,76 +1,75 @@
 # Monorepo Frontend with Galaxy
 
-Este projeto é um monorepo gerenciado por [pnpm](https://pnpm.io/) workspace.
+This project is a monorepo managed with a [pnpm](https://pnpm.io/) workspace.
 
-## Estrutura
+## Structure
 
-- `api-products/`: API MeteorJS responsável por prover os dados de produtos via REST
-- `home/`: Aplicação principal que carrega remotes de forma federada
-- `list-products/`: Aplicação React remota responsável por renderizar a lista de produtos
+- `api-products/`: MeteorJS API that serves product data over REST
+- `home/`: Main host app that loads remotes via federation
+- `list-products/`: Remote React app that renders the product list
 
-## Como instalar as dependências
+## Install dependencies
 
 ```sh
 pnpm install
 ```
 
-## Como rodar cada pacote
+## How to run each package
 
-Para visualizar a arquitetura completa, use três terminais:
+To see the full architecture running, use three terminals:
 
 ```sh
-# 1) API Meteor
+# 1) Meteor API
 pnpm --filter api-products start
 
-# 2) Remote list-products (porta 4174 por padrão)
+# 2) Remote list-products (port 4174 by default)
 pnpm --filter list-products dev
 
-# 3) Shell principal que consome o remote (porta 4173)
+# 3) Host shell that consumes the remote (port 4173)
 pnpm --filter home dev
 ```
 
-A API Meteor sobe na porta `3000` e expõe `GET /api/products` para que os remotes consumam os dados.
+The Meteor API listens on port `3000` and exposes `GET /api/products` for the remotes to consume.
 
-### Executando a API Meteor (detalhado)
+### Running the Meteor API (detailed)
 
-1. Instale o runtime do Meteor (caso ainda não tenha):
+1. Install the Meteor runtime (if you do not have it yet):
 
    ```sh
    curl https://install.meteor.com/ | sh
    ```
 
-2. Instale as dependências do pacote (inclui os tipos do Meteor para TypeScript):
+2. Install the package dependencies (includes Meteor types for TypeScript):
 
    ```sh
    cd api-products
    meteor npm install
    ```
 
-3. Suba a API (porta padrão 3000):
+3. Start the API (default port 3000):
 
    ```sh
    meteor run
-   # ou, a partir da raiz do monorepo:
+   # or, from the monorepo root:
    pnpm --filter api-products start
    ```
 
-4. Endpoints disponíveis:
-   - `GET http://localhost:3000/api/products` — lista todos os produtos seedados.
-   - `GET http://localhost:3000/api/products/<id>` — retorna um produto específico.
-   - `POST http://localhost:3000/api/products` — cria um produto (`{ name, price, stock? }`).
+4. Available endpoints:
+   - `GET http://localhost:3000/api/products` — lists all seeded products.
+   - `POST http://localhost:3000/api/products` — creates a product (`{ name, price, stock? }`) (_optional_).
 
-Se o TypeScript do editor não resolver os imports `meteor/*`, garanta que o `meteor npm install` foi executado (ele baixa `@types/meteor`) e que o `api-products/tsconfig.json` está no projeto.
+If your editor's TypeScript cannot resolve `meteor/*` imports, ensure `meteor npm install` was run (it downloads `@types/meteor`) and that `api-products/tsconfig.json` is included in the project.
 
-## Configurações compartilhadas
-- ESLint: `eslint.config.js` na raiz
-- TypeScript: `tsconfig.base.json` na raiz
+## Shared configs
+- ESLint: `eslint.config.js` at the repo root
+- TypeScript: `tsconfig.base.json` at the repo root
 
-## Arquitetura
+## Architecture
 
-- **Backend (MeteorJS):** provê um endpoint REST (`/api/products`) com seed automático e CORS liberado.
-- **Remotes (Module Federation):** `list-products` gera um `remote-entry` ESM servido pelo Vite para consumo em outras aplicações.
-- **Host:** `home` carrega o `remote-entry` em tempo de execução e exibe o catálogo federado, mantendo os pacotes front-end independentes e escaláveis.
+- **Backend (MeteorJS):** provides a REST endpoint (`/api/products`) with automatic seeding and open CORS.
+- **Remotes (Module Federation):** `list-products` builds a `remote-entry` ESM served by Vite for consumption in other apps.
+- **Host:** `home` loads the `remote-entry` at runtime and displays the federated catalog, keeping front-end packages independent and scalable.
 
-## Observações
-- Cada pacote pode ter suas dependências e configurações específicas.
-- Use sempre o comando `pnpm` na raiz do monorepo para instalar dependências e rodar scripts.
+## Notes
+- Each package can have its own dependencies and configuration.
+- Always run `pnpm` from the monorepo root to install dependencies and execute scripts.
